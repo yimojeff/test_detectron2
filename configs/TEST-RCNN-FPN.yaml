@@ -1,8 +1,9 @@
-OUTPUT_DIR: "./output/Attri_Center"
+OUTPUT_DIR: "./output/Attri_Center_W100/"
 MODEL:
   FAST_LAYERS:
     NAME: "TESTFastRCNNOutputLayers"
-  WEIGHTS: "./output/Attri_Center/model_0004999.pth"
+  #WEIGHTS: "./output/Attri_Center/model_0004999.pth"
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
   MASK_ON: False
   META_ARCHITECTURE: "GeneralizedRCNN"
   BACKBONE:

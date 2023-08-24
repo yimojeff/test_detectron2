@@ -125,7 +125,7 @@ def setup(args):
     cfg.DATASETS.TEST = ("SODA_val",)
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 6
     cfg.SOLVER.CHECKPOINT_PERIOD = 1000
-    cfg.TESE.TSNE_PERIOD = 300
+    cfg.TEST.TSNE_PERIOD = 300
 
     cfg.freeze()
     default_setup(cfg, args)

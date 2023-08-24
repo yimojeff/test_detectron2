@@ -814,10 +814,16 @@ class TESTFastRCNNOutputLayers(nn.Module):
 
         box_features = box_features.reshape(-1, self.feat_dim[0], self.feat_dim[1])
         '''loss for center'''
+        # kl_x = F.kl_div(F.log_softmax(box_features, dim=-1), F.softmax(center.clone().detach(), dim=-1), reduction='none').sum(
+        #     -1) * 1.6e-4
+        # kl_ce = F.kl_div(F.log_softmax(center, dim=-1), F.softmax(box_features.clone().detach(), dim=-1), reduction='none').sum(
+        #     -1) * 1.6e-5
+
         kl_x = F.kl_div(F.log_softmax(box_features, dim=-1), F.softmax(center.clone().detach(), dim=-1), reduction='none').sum(
-            -1) * 1.6e-4
+            -1) * 1.6e-2
         kl_ce = F.kl_div(F.log_softmax(center, dim=-1), F.softmax(box_features.clone().detach(), dim=-1), reduction='none').sum(
-            -1) * 1.6e-5
+            -1) * 1.6e-3
+
 
         '''loss for gmm weights'''
         loss_gmm = (kl_x.clone().detach() * F.softmax(gmm_weights, dim=-1)).mean()
