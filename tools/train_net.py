@@ -124,6 +124,8 @@ def setup(args):
     cfg.DATASETS.TRAIN = ("SODA_train",)
     cfg.DATASETS.TEST = ("SODA_val",)
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 6
+    cfg.SOLVER.CHECKPOINT_PERIOD = 1000
+    cfg.TESE.TSNE_PERIOD = 300
 
     cfg.freeze()
     default_setup(cfg, args)
@@ -199,9 +201,6 @@ class TsneCal(hooks.HookBase):
                 fig1 = plot_embedding_2D(result_2D, result_l, 't-SNE')
                 plt.savefig("ATT_tsne{}.png".format(self.trainer.iter))
 
-
-
-
 color_map = ['r','y','k','g','b','m','c'] # 7个类，准备7种颜色
 def plot_embedding_2D(data, label, title):
     """
@@ -245,7 +244,7 @@ def main(args):
 
     trainer.resume_or_load(resume=args.resume)
     if cfg.TEST.TSNE:
-        trainer.register_hooks([TsneCal(cfg.TEST.EVAL_PERIOD)])
+        trainer.register_hooks([TsneCal(cfg.TEST.TSNE_PERIOD)])
     if cfg.TEST.AUG.ENABLED:
         trainer.register_hooks(
             [hooks.EvalHook(0, lambda: trainer.test_with_TTA(cfg, trainer.model))]
