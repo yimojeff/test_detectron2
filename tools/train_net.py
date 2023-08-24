@@ -240,17 +240,17 @@ def main(args):
     consider writing your own training loop (see plain_train_net.py) or
     subclassing the trainer.
     """
-    with torch.no_grad():
-        trainer = Trainer(cfg)
 
-        trainer.resume_or_load(resume=args.resume)
-        if cfg.TEST.TSNE:
-            trainer.register_hooks([TsneCal(cfg.TEST.EVAL_PERIOD)])
-        if cfg.TEST.AUG.ENABLED:
-            trainer.register_hooks(
-                [hooks.EvalHook(0, lambda: trainer.test_with_TTA(cfg, trainer.model))]
-            )
-        return trainer.train()
+    trainer = Trainer(cfg)
+
+    trainer.resume_or_load(resume=args.resume)
+    if cfg.TEST.TSNE:
+        trainer.register_hooks([TsneCal(cfg.TEST.EVAL_PERIOD)])
+    if cfg.TEST.AUG.ENABLED:
+        trainer.register_hooks(
+            [hooks.EvalHook(0, lambda: trainer.test_with_TTA(cfg, trainer.model))]
+        )
+    return trainer.train()
 
 def my_pre():
     from detectron2.data.datasets import register_coco_instances
